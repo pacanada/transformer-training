@@ -95,7 +95,7 @@ class Transformer(nn.Module):
     def __init__(self, config) -> None:
         super().__init__()
         self.config=config
-        self.token_embedding = TokenHead(in_emebdding=1, out_embedding=config.embedding_dim, config=config)
+        self.token_embedding = TokenHead(input_dim=1, out_embedding=config.embedding_dim, config=config)
         self.positional_encoding = nn.Embedding(num_embeddings=config.block_size, embedding_dim=config.embedding_dim)
         self.blocks = nn.Sequential(*[Block(config) for _ in range(config.n_blocks)],
             LayerNorm(ndim=config.embedding_dim),
