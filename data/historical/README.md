@@ -1,0 +1,1 @@
+Extracted from Binance Full History kaggle dataset https://www.kaggle.com/datasets/jorijnsmit/binance-full-history
