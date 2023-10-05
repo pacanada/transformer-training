@@ -3,7 +3,7 @@ from pathlib import Path
 
 class Config:
     # TODO: split experiment and model config
-    root_dir = Path(".").parent
+    root_dir = Path(__file__).parent.parent
     data_dir = root_dir / "data"
     historical_dir = data_dir / "historical"
     pytorch_dir = data_dir / "pytorch"

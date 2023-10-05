@@ -13,7 +13,7 @@ from src.processing.utils import create_sequences, create_sequences_target, stan
 pairs =["xlmeur", "bcheur","compeur","xdgeur", "etheur", "algoeur", "bateur", "adaeur","xrpeur"]
 input_directory = config.data_dir / "validation"
 for pair_name in pairs:
-    df = pd.read_csv(input_directory / f"{pair_name}.csv").head(700)
+    df = pd.read_csv(input_directory / f"{pair_name}.csv")[30:730]
 
     # Assign target
     df = add_target(df, column_to_apply="open", target_list=[5])
