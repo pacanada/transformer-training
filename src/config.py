@@ -21,7 +21,7 @@ class Config:
     batch_size = 100
     epochs = 1000
     evaluation_steps = 100
-    learning_rate = 1e-3
+    learning_rate = 1e-4
     load_model = True
     n_blocks=6
     vocab_size = 2

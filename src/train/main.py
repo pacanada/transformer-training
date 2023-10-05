@@ -5,17 +5,20 @@ import torch.nn as nn
 
 from src.config import config
 from src.models.transformers import Transformer
+from src.utils import WandbLogger
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 X = torch.load(config.pytorch_dir  / "X_train_all.pt")
 
-y = torch.load(config.pytorch_dir / "y_train_all.pt")
-X_test = torch.load(config.pytorch_dir / "X_test_all.pt")[:1000]
-y_test = torch.load(config.pytorch_dir / "y_test_all.pt")[:1000]
-
+y = torch.load(config.pytorch_dir / "y_train_all.pt").to(device)
+X_test = torch.load(config.pytorch_dir / "X_test_all.pt")[:1000].to(device)
+y_test = torch.load(config.pytorch_dir / "y_test_all.pt")[:1000].to(device)
+wanddblogger = WandbLogger(project_name="crypto", entity_name="pab_lo4", model_params=config.dict())
 
 print(config.dict())
 
-m = Transformer(config)
+m = Transformer(config).to(device)
 if config.load_model:
     m.load_state_dict(torch.load(config.weights_dir / "weights.pt"))
     print("Model loaded from", config.weights_dir / "weights.pt")
@@ -32,7 +35,7 @@ for i in range(config.epochs):
     idx=torch.randint(0, X.size()[0], (config.batch_size,))
     #m.zero_grad()
     optimizer.zero_grad()
-    out = m(X[idx].squeeze())
+    out = m(X[idx].squeeze().to(device))
     # some broadcasting magic (from mingpt)
     loss = loss_fn(out.view(config.batch_size*config.block_size,config.vocab_size),y[idx].view(config.batch_size*config.block_size))
     loss.backward()
@@ -49,6 +52,8 @@ for i in range(config.epochs):
             m.train()
             print("i:", i, "Loss train", loss_training, "Loss val", loss_val)
             torch.save(m.state_dict(), config.weights_dir / "weights.pt")
+            wanddblogger.log({"loss_train":loss_training, "loss_val":loss_val})
+            wanddblogger.log_weights(m.state_dict(), name="weights")
 
 # save model
 torch.save(m.state_dict(), config.weights_dir / "weights.pt")
