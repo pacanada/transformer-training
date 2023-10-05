@@ -53,14 +53,16 @@ for i in range(config.epochs):
             print("i:", i, "Loss train", loss_training, "Loss val", loss_val)
             torch.save(m.state_dict(), config.weights_dir / "weights.pt")
             wanddblogger.log({"loss_train":loss_training, "loss_val":loss_val})
-            wanddblogger.log_weights(m.state_dict(), name="weights")
+
+
 
 # save model
 torch.save(m.state_dict(), config.weights_dir / "weights.pt")
+wanddblogger.log_weights(m.state_dict(), name="weights")
 # save config as json
-import json
-with open(config.weights_dir  / "config.json", "w") as f:
-    json.dump(config.json(), f)
+# import json
+# with open(config.weights_dir  / "config.json", "w") as f:
+#     json.dump(config.json(), f)
 
 # save losses
 import matplotlib.pyplot as plt
