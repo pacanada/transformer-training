@@ -10,7 +10,7 @@ import os
 def main():
 
 
-    df = pd.read_parquet(config.root_dir / "data" / "historical" / "dataset.parquet")
+    df = pd.read_pickle(config.root_dir / "data" / "historical" / "dataset.pickle")
     # Add classification target
     # old [0.025, 0.15, 0.5 , 0.85, 0.975]
     bins_no_inf = df[config.numeric_target].quantile([0.5]).to_list()
