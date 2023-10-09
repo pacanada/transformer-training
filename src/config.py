@@ -19,10 +19,10 @@ class Config:
     n_head = 4
     dropout = 0.1
     batch_size = 100
-    epochs = 1000
-    evaluation_steps = 100
-    learning_rate = 1e-4
-    load_model = True
+    epochs = 5000
+    evaluation_steps = 20
+    learning_rate = 1e-3
+    load_model = False
     n_blocks=6
     vocab_size = 2
 

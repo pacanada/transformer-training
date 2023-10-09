@@ -107,3 +107,19 @@ class Transformer(nn.Module):
         x = self.lm_head(x)
         # Cross entropy already have softmax
         return x
+    
+class Baseline(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        self.l1 = nn.Linear(config.block_size, 1000)
+        self.l2 = nn.Linear(1000, 500)
+        self.l3 = nn.Linear(500, 200)
+        self.l4 = nn.Linear(200, config.vocab_size)
+        self.relu = nn.ReLU()
+    def forward(self, x):
+        x = self.l1(x)
+        x = self.relu(x)
+        x = self.l2(x)
+        x = self.relu(x)
+        x = self.l3(x)
+        return x
